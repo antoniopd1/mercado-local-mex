@@ -1,0 +1,1 @@
+web: gunicorn mercadolocalmx_backend.wgsi

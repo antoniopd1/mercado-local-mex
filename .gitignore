@@ -1,0 +1,36 @@
+# Archivos de entorno y claves
+.env
+.env.production
+firebase_admin_sdk.json
+
+# Directorios de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entorno virtual de Python
+env/
+env/
+venv/
+/mercadolocalmx_backend/.env
+
+# Base de datos local
+db.sqlite3
+
+# Archivos de migraciones (los puedes borrar y volver a generar si es necesario)
+*/migrations/00*.py
+*/migrations/*.pyc
+
+# Archivos estáticos y de medios de Django
+media/
+staticfiles/
+
+# Archivos del sistema operativo y de editores de texto
+.DS_Store
+.vscode/
+.idea/
+
+# Logs y otros archivos temporales
+*.log
+*.tmp
