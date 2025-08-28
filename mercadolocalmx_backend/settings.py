@@ -103,9 +103,7 @@ WSGI_APPLICATION = 'mercadolocalmx_backend.wsgi.application'
 # Ahora se lee de variables de entorno. Se recomienda no tener fallbacks
 # en producción para evitar errores de conexión con credenciales no deseadas.
 DATABASES = {
-    'default': dj_database_url.config(
-            default=os.environ.get('MYSQL_URL')
-    )
+    'default': dj_database_url.config()
 }
 
 # Configuración de Django REST Framework
