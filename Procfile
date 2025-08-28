@@ -1,1 +1,1 @@
-web: python manage.py collectstatic gunicorn mercadolocalmx_backend.wgsi
+web: python manage.py collectstatic gunicorn mercadolocalmx_backend.wsgi
