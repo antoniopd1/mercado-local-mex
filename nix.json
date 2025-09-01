@@ -1,6 +1,6 @@
 {
   "packages": [
     "pkg-config",
-    "mariadb"
+    "mysql57-connector-c"
   ]
 }
