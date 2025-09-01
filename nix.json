@@ -1,6 +1,6 @@
 {
   "packages": [
     "pkg-config",
-    "mysql57-connector-c"
+    "mysqlclient"
   ]
 }
