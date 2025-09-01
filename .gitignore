@@ -19,8 +19,8 @@ venv/
 db.sqlite3
 
 # Archivos de migraciones (los puedes borrar y volver a generar si es necesario)
-*/migrations/00*.py
-*/migrations/*.pyc
+
+
 
 # Archivos estáticos y de medios de Django
 media/
