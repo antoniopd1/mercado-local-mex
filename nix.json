@@ -1,0 +1,6 @@
+{
+  "packages": [
+    "pkg-config",
+    "mariadb-connector-c"
+  ]
+}
