@@ -76,8 +76,8 @@ MIDDLEWARE = [
 ]
 
 # CORS: En producción, usa CORS_ALLOWED_ORIGINS con una lista.
-CORS_ALLOW_ALL_ORIGINS = True
-#CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+#CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'mercadolocalmx_backend.urls'
@@ -164,7 +164,7 @@ AUTH_USER_MODEL = 'usuarios.CustomUser'
 
 # Obtiene la variable de entorno de las credenciales de Firebase
 firebase_creds_source = os.environ.get('FIREBASE_ADMIN_SDK_CREDENTIALS')
-print("Hello",firebase_creds_source)
+
 
 # Inicializar Firebase Admin SDK si no está inicializado
 if not firebase_admin._apps and firebase_creds_source:
