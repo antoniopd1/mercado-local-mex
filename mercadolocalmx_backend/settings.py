@@ -76,8 +76,8 @@ MIDDLEWARE = [
 ]
 
 # CORS: En producción, usa CORS_ALLOWED_ORIGINS con una lista.
-#CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
+CORS_ALLOW_ALL_ORIGINS = True
+#CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',')
 CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'mercadolocalmx_backend.urls'
@@ -104,7 +104,10 @@ WSGI_APPLICATION = 'mercadolocalmx_backend.wsgi.application'
 # Ahora se lee de variables de entorno. Se recomienda no tener fallbacks
 # en producción para evitar errores de conexión con credenciales no deseadas.
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': dj_database_url.config(
+        # Lee la URL de la variable de entorno DATABASE_URL
+        default=os.environ.get('DATABASE_URL')
+    )
 }
 
 # Configuración de Django REST Framework
@@ -173,6 +176,7 @@ if not firebase_admin._apps and firebase_creds_source:
         if os.path.exists(firebase_creds_source):
             cred = credentials.Certificate(firebase_creds_source)
             firebase_admin.initialize_app(cred)
+            print("Firebase Admin SDK inicializado desde archivo de credenciales 1.")
             logger.info("Firebase Admin SDK inicializado desde archivo de credenciales.")
         
         # Si no es una ruta de archivo, intenta inicializarlo desde una cadena JSON (para producción)
@@ -181,8 +185,10 @@ if not firebase_admin._apps and firebase_creds_source:
             creds_json = json.loads(firebase_creds_source)
             cred = credentials.Certificate(creds_json)
             firebase_admin.initialize_app(cred)
+            print("Firebase Admin SDK inicializado desde cadena JSON.")
             logger.info("Firebase Admin SDK inicializado desde cadena JSON.")
 
     except Exception as e:
+        print(f"Error fatal al inicializar Firebase Admin SDK: {e}")
         logger.critical(f"Error fatal al inicializar Firebase Admin SDK: {e}")
 
