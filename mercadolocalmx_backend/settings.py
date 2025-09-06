@@ -11,6 +11,7 @@ from firebase_admin import credentials
 import logging
 import dj_database_url
 
+
 # Crear una instancia de logger para este módulo
 logger = logging.getLogger(__name__)
 
@@ -20,11 +21,7 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --- Configuración de Archivos de Medios (Media Files) ---
-# En producción, estos archivos NO se servirán con Django.
-# Serán gestionados por un servicio de almacenamiento en la nube como Amazon S3.
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+
 
 # --- Variables de Entorno y Seguridad ---
 # Las siguientes variables deben estar definidas en el entorno de producción.
@@ -34,6 +31,22 @@ STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 STRIPE_MONTHLY_PLAN_PRICE_ID = os.environ.get('STRIPE_MONTHLY_PLAN_PRICE_ID')
 FRONTEND_DOMAIN = os.environ.get('FRONTEND_DOMAIN')
+
+# Configuración de AWS S3
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+# Configuración de django-storages
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_USE_SSL = True
+AWS_QUERYSTRING_AUTH = False
+
+# Define la URL de tus archivos de medios
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
+MEDIA_ROOT = ''
 
 # DEBUG: En producción, DEBE ser False.
 # Evitar fallbacks para no habilitarlo por error en un entorno real.
