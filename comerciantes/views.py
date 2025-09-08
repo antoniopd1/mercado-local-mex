@@ -86,7 +86,7 @@ class BusinessViewSet(viewsets.ModelViewSet):
         
         except Exception as e:
             # Agrega este log para capturar el error y la traza completa
-            print(f"Error fatal al actualizar el negocio ID: {instance.id}.", exc_info=True())
+            print(f"Error fatal al actualizar el negocio ID: {instance.id}.", exc_info=True)
             logger.error(f"Error fatal al actualizar el negocio ID: {instance.id}.", exc_info=True)
             return Response({"error": "Ocurrió un error interno."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
