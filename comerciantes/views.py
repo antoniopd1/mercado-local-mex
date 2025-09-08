@@ -71,6 +71,7 @@ class BusinessViewSet(viewsets.ModelViewSet):
             
             # Agrega este log para ver si la petición está llegando
             logger.info(f"Intentando actualizar el negocio ID: {instance.id}. Datos recibidos.")
+            print(f"Intentando actualizar el negocio ID: {instance.id}. Datos recibidos.")
             
             serializer = self.get_serializer(instance, data=request.data, partial=partial)
             serializer.is_valid(raise_exception=True)
@@ -80,11 +81,12 @@ class BusinessViewSet(viewsets.ModelViewSet):
             
             # Agrega este log si la subida fue exitosa
             logger.info(f"Negocio ID: {instance.id} actualizado exitosamente. El archivo debería estar en S3.")
-            
+            print(f"Negocio ID: {instance.id} actualizado exitosamente. El archivo debería estar en S3.")
             return Response(serializer.data)
         
         except Exception as e:
             # Agrega este log para capturar el error y la traza completa
+            print(f"Error fatal al actualizar el negocio ID: {instance.id}.", exc_info=True())
             logger.error(f"Error fatal al actualizar el negocio ID: {instance.id}.", exc_info=True)
             return Response({"error": "Ocurrió un error interno."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
