@@ -1,4 +1,5 @@
 # comerciantes/views.py
+
 import logging
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import action
