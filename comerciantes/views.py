@@ -61,7 +61,7 @@ class BusinessViewSet(viewsets.ModelViewSet):
             return Business.objects.filter(user__is_business_owner=True)
         
         return Business.objects.none()
-     # **AQUÍ SE AGREGA EL CÓDIGO DE DEPURACIÓN**
+
     def update(self, request, *args, **kwargs):
         # Sobreescribe el método update para agregar logs
         try:
@@ -150,6 +150,25 @@ class OfferViewSet(viewsets.ModelViewSet):
                 return queryset
             
         return Offer.objects.none()
+
+    def update(self, request, *args, **kwargs):
+        # Agregamos la misma lógica de depuración al ViewSet de Ofertas
+        try:
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            
+            logger.info(f"Intentando actualizar la oferta ID: {instance.id}.")
+            
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            
+            logger.info(f"Oferta ID: {instance.id} actualizada exitosamente. El archivo debería estar en S3.")
+            return Response(serializer.data)
+        
+        except Exception as e:
+            logger.error(f"Error fatal al actualizar la oferta ID: {instance.id}.", exc_info=True)
+            return Response({"error": "Ocurrió un error interno."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def perform_create(self, serializer):
         try:
