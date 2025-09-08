@@ -1,4 +1,5 @@
 # comerciantes/views.py
+import logging
 from rest_framework import viewsets, permissions, generics, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -20,6 +21,9 @@ from django.conf import settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 User = get_user_model()
+
+# Crea una instancia de logger para este módulo
+logger = logging.getLogger(__name__)
 
 class BusinessViewSet(viewsets.ModelViewSet):
     queryset = Business.objects.all()
@@ -57,6 +61,31 @@ class BusinessViewSet(viewsets.ModelViewSet):
             return Business.objects.filter(user__is_business_owner=True)
         
         return Business.objects.none()
+     # **AQUÍ SE AGREGA EL CÓDIGO DE DEPURACIÓN**
+    def update(self, request, *args, **kwargs):
+        # Sobreescribe el método update para agregar logs
+        try:
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            
+            # Agrega este log para ver si la petición está llegando
+            logger.info(f"Intentando actualizar el negocio ID: {instance.id}. Datos recibidos.")
+            
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            serializer.is_valid(raise_exception=True)
+            
+            # Este es el punto crítico donde se intenta guardar el archivo en S3
+            serializer.save()
+            
+            # Agrega este log si la subida fue exitosa
+            logger.info(f"Negocio ID: {instance.id} actualizado exitosamente. El archivo debería estar en S3.")
+            
+            return Response(serializer.data)
+        
+        except Exception as e:
+            # Agrega este log para capturar el error y la traza completa
+            logger.error(f"Error fatal al actualizar el negocio ID: {instance.id}.", exc_info=True)
+            return Response({"error": "Ocurrió un error interno."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def perform_create(self, serializer):
         # Asocia el negocio con el usuario actual automáticamente al crearlo.
