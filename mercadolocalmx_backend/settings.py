@@ -32,27 +32,7 @@ STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
 STRIPE_MONTHLY_PLAN_PRICE_ID = os.environ.get('STRIPE_MONTHLY_PLAN_PRICE_ID')
 FRONTEND_DOMAIN = os.environ.get('FRONTEND_DOMAIN')
 
-# Configuración de AWS S3
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-logger.info("Configuración de AWS S3")
-print("Configuración de AWS S3")
 
-# Configuración de django-storages
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_USE_SSL = True
-AWS_QUERYSTRING_AUTH = False
-logger.info("Configuración de django-storages")
-print("Configuración de django-storages")
-
-# Define la URL de tus archivos de medios
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com'
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
-MEDIA_ROOT = ''
-logger.info("Define la URL de tus archivos de medios")
-print("Define la URL de tus archivos de medios")
 
 # DEBUG: En producción, DEBE ser False.
 # Evitar fallbacks para no habilitarlo por error en un entorno real.
