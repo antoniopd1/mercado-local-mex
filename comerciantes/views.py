@@ -64,32 +64,24 @@ class BusinessViewSet(viewsets.ModelViewSet):
         return Business.objects.none()
 
     def update(self, request, *args, **kwargs):
-        # Sobreescribe el método update para agregar logs
-        try:
-            partial = kwargs.pop('partial', False)
-            instance = self.get_object()
-            
-            # Agrega este log para ver si la petición está llegando
-            logger.info(f"Intentando actualizar el negocio ID: {instance.id}. Datos recibidos.")
-            print(f"Intentando actualizar el negocio ID: {instance.id}. Datos recibidos.")
-            
-            serializer = self.get_serializer(instance, data=request.data, partial=partial)
-            serializer.is_valid(raise_exception=True)
-            
-            # Este es el punto crítico donde se intenta guardar el archivo en S3
-            serializer.save()
-            
-            # Agrega este log si la subida fue exitosa
-            logger.info(f"Negocio ID: {instance.id} actualizado exitosamente. El archivo debería estar en S3.")
-            print(f"Negocio ID: {instance.id} actualizado exitosamente. El archivo debería estar en S3.")
-            return Response(serializer.data)
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
         
-        except Exception as e:
-            # Agrega este log para capturar el error y la traza completa
-            print(f"Error fatal al actualizar el negocio ID: {instance.id}.", exc_info=True)
-            logger.error(f"Error fatal al actualizar el negocio ID: {instance.id}.", exc_info=True)
-            return Response({"error": "Ocurrió un error interno."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        # Agrega este log para ver si la petición está llegando
+        logger.info(f"Intentando actualizar el negocio ID: {instance.id}. Datos recibidos.")
+        print(f"Intentando actualizar el negocio ID: {instance.id}. Datos recibidos.")
+        
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        
+        # Aquí se intenta guardar el archivo en S3
+        serializer.save()
+        
+        # Agrega este log si la subida fue exitosa
+        logger.info(f"Negocio ID: {instance.id} actualizado exitosamente. El archivo debería estar en S3.")
+        print(f"Negocio ID: {instance.id} actualizado exitosamente. El archivo debería estar en S3.")
+        return Response(serializer.data)
+        
     def perform_create(self, serializer):
         # Asocia el negocio con el usuario actual automáticamente al crearlo.
         serializer.save(user=self.request.user)
